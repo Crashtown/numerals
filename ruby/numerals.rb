@@ -1,4 +1,4 @@
-numerals = {
+NUMERALS = {
   1 => "one",
   2 => "two",
   3 => "three",
@@ -32,14 +32,26 @@ numerals = {
   1000000000 => "billion"
 }
 
-# thousand_node :: [hundred node, numeric, numeric] | :empty
+
+# thousand_node :: (hundreds, tens, ones) | :empty
+# hundreds :: numeric
+# tens :: numeric
+# ones :: numeric
+
 # numeric, array -> [thousand_node]
-def to_abstract_tree(integer, acc = [])
-  rest, rem = integer.divmod(1000)
-  acc << rem # make thousand_node
+def to_abstract_tree(num, acc = [])
+  rest, rem = num.divmod(1000)
+  acc << to_thousand_node(rem)
   if rest.zero?
-    acc
+    acc.reverse
   else
-    to_numeral(rest, acc)
+    to_abstract_tree(rest, acc)
   end
+end
+
+def to_thousand_node(num)
+  return :empty if num.zero?
+  hundreds, rest = num.divmod(100)
+  tens, ones = rest.divmod(10)
+  [hundreds, tens, ones]
 end
