@@ -1,4 +1,4 @@
-NUMERALS = {
+ONES = {
   1 => "one",
   2 => "two",
   3 => "three",
@@ -8,29 +8,38 @@ NUMERALS = {
   7 => "seven",
   8 => "eight",
   9 => "nine",
-  10 => "ten",
-  11 => "eleven",
-  12 => "twelve",
-  13 => "thirteen",
-  14 => "fourteen",
-  15 => "fifteen",
-  16 => "sixteen",
-  17 => "seventeen",
-  18 => "eighteen",
-  19 => "nineteen",
-  20 => "twenty",
-  30 => "thirty",
-  40 => "forty",
-  50 => "fifty",
-  60 => "sixty",
-  70 => "seventy",
-  80 => "eighty",
-  90 => "ninety",
-  100 => "hundred",
-  1000 => "thousand",
-  1000000 => "million",
-  1000000000 => "billion"
+  0 => "zero"
 }
+
+TEENS = {
+  0 => "ten",
+  1 => "eleven",
+  2 => "twelve",
+  3 => "thirteen",
+  4 => "fourteen",
+  5 => "fifteen",
+  6 => "sixteen",
+  7 => "seventeen",
+  8 => "eighteen",
+  9 => "nineteen"
+}
+
+TENS = {
+  2 => "twenty",
+  3 => "thirty",
+  4 => "forty",
+  5 => "fifty",
+  6 => "sixty",
+  7 => "seventy",
+  8 => "eighty",
+  9 => "ninety"
+}
+
+POWS = [
+  "thousand",
+  "million",
+  "billion"
+]
 
 
 # thousand_node :: (hundreds, tens, ones) | :empty
@@ -54,4 +63,19 @@ def to_thousand_node(num)
   hundreds, rest = num.divmod(100)
   tens, ones = rest.divmod(10)
   [hundreds, tens, ones]
+end
+
+def one_to_text(num)
+  ONES[num]
+end
+
+def ten_to_text(ten_node)
+  ten, one = ten_node
+  return one_to_text(one) if ten == 0
+  return teen_to_text(one) if ten == 1
+  "#{TENS[ten]}-#{one_to_text(one)}"
+end
+
+def teen_to_text(num)
+  TEENS[num]
 end
