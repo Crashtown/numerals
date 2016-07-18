@@ -3,7 +3,7 @@ require "minitest/autorun"
 
 class NumeralsTest < Minitest::Test
 
-  def test_parses_number_by_thousands
+  def test_parses_number_by_thousand_pow
     assert_equal [[0, 0, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
@@ -52,9 +52,11 @@ class NumeralsTest < Minitest::Test
   end
 
 
-  def test_transform_hundreds_to_words
+  def test_transform_hundreds_to_text
     assert_equal "one hundred", hundred_to_text([1, 0, 0])
-    assert_equal "six hundred and two", hundred_to_text([6, 0, 2])
-    assert_equal "one hundred and nineteen", hundred_to_text([1, 1, 19])
+    assert_equal "six hundred two", hundred_to_text([6, 0, 2])
+    assert_equal "one hundred nineteen", hundred_to_text([1, 1, 9])
+    assert_equal "one hundred twenty", hundred_to_text([1, 2, 0])
+    assert_equal "two hundred twenty-two", hundred_to_text([2, 2, 2])
   end
 end

@@ -42,10 +42,10 @@ POWS = [
 ]
 
 
-# thousand_node :: (hundreds, tens, ones) | :empty
-# hundreds :: numeric
-# tens :: numeric
-# ones :: numeric
+# thousand_node :: (hundred, ten, one) | :empty
+# hundred :: numeric
+# ten :: numeric
+# one :: numeric
 
 # numeric, array -> [thousand_node]
 def to_abstract_tree(num, acc = [])
@@ -60,9 +60,9 @@ end
 
 def to_thousand_node(num)
   return :empty if num.zero?
-  hundreds, rest = num.divmod(100)
-  tens, ones = rest.divmod(10)
-  [hundreds, tens, ones]
+  hundred, rest = num.divmod(100)
+  ten, one = rest.divmod(10)
+  [hundred, ten, one]
 end
 
 def one_to_text(num)
@@ -71,11 +71,21 @@ end
 
 def ten_to_text(ten_node)
   ten, one = ten_node
-  return one_to_text(one) if ten == 0
+  return one_to_text(one) if ten.zero?
   return teen_to_text(one) if ten == 1
+  return TENS[ten] if one.zero?
   "#{TENS[ten]}-#{one_to_text(one)}"
 end
 
 def teen_to_text(num)
   TEENS[num]
+end
+
+def hundred_to_text(hundred_node)
+  hundred, ten, one = hundred_node
+  ten_text = ten_to_text([ten, one])
+  return ten_text if hundred.zero?
+  hundred_text = "#{one_to_text(hundred)} hundred"
+  return hundred_text if ten.zero? && one.zero?
+  "#{hundred_text} #{ten_text}"
 end
