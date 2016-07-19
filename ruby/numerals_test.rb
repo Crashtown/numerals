@@ -7,28 +7,28 @@ class NumeralsTest < Minitest::Test
     assert_equal [[0, 0, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_term(7_654_321)
+                 number_to_term(7_654_321)
 
     assert_equal [[0, 3, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_term(37_654_321)
+                 number_to_term(37_654_321)
 
     assert_equal [[0, 0, 5],
                   [4, 3, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_term(5_437_654_321)
+                 number_to_term(5_437_654_321)
 
     assert_equal [[0, 0, 5],
                   [4, 3, 7],
                   [0, 0, 0],
                   [3, 2, 1]],
-                 to_term(5_437_000_321)
+                 number_to_term(5_437_000_321)
 
     assert_equal [[0, 0, 1],
                   [0, 0, 0]],
-                 to_term(1_000)
+                 number_to_term(1_000)
   end
 
   def test_transform_ones_to_text
@@ -79,6 +79,14 @@ class NumeralsTest < Minitest::Test
                                [4, 3, 7],
                                [0, 0, 0],
                                [3, 2, 1]])
+  end
+
+  def test_to_numeral
+    assert_equal "seven million, six hundred fifty-four thousand, three hundred twenty-one",
+                 to_numeral(7_654_321)
+    assert_equal "five billion, four hundred thirty-seven million, six hundred fifty-four thousand, three hundred twenty-one",
+                 to_numeral(5_437_654_321)
+    assert_equal "zero", to_numeral(0)
   end
 
 end

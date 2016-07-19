@@ -41,6 +41,18 @@ POWS = [
   "billion"
 ]
 
+###
+# PUBLIC INTERFACE
+###
+
+def to_numeral(number)
+  return "zero" if number.zero?
+  term_to_text(number_to_term(number))
+end
+
+###
+# INTERNAL METHODS
+###
 
 # hundred_node :: (hundred, ten, one) | :empty
 # hundred :: numeric
@@ -48,13 +60,13 @@ POWS = [
 # one :: numeric
 
 # numeric, array -> [hundred_node]
-def to_term(num, acc = [])
+def number_to_term(num, acc = [])
   rest, rem = num.divmod(1000)
   acc << to_hundred_node(rem)
   if rest.zero?
     acc.reverse
   else
-    to_term(rest, acc)
+    number_to_term(rest, acc)
   end
 end
 
