@@ -8,7 +8,6 @@ ONES = {
   7 => "seven",
   8 => "eight",
   9 => "nine",
-  0 => "zero"
 }
 
 TEENS = {

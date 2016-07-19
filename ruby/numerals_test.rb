@@ -41,7 +41,6 @@ class NumeralsTest < Minitest::Test
     assert_equal "seven", one_to_text(7)
     assert_equal "eight", one_to_text(8)
     assert_equal "nine",  one_to_text(9)
-    assert_equal "zero",  one_to_text(0)
   end
 
   def test_transform_tens_to_text
