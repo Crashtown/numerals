@@ -54,12 +54,6 @@ end
 # INTERNAL METHODS
 ###
 
-# hundred_node :: (hundred, ten, one) | :empty
-# hundred :: numeric
-# ten :: numeric
-# one :: numeric
-
-# numeric, array -> [hundred_node]
 def number_to_term(num, acc = [])
   rest, rem = num.divmod(1000)
   acc << to_hundred_node(rem)
