@@ -59,7 +59,6 @@ def to_abstract_tree(num, acc = [])
 end
 
 def to_thousand_node(num)
-  return :empty if num.zero?
   hundred, rest = num.divmod(100)
   ten, one = rest.divmod(10)
   [hundred, ten, one]
@@ -88,4 +87,20 @@ def hundred_to_text(hundred_node)
   hundred_text = "#{one_to_text(hundred)} hundred"
   return hundred_text if ten.zero? && one.zero?
   "#{hundred_text} #{ten_text}"
+end
+
+def hundred_with_pow_to_text(hundred_node, pow)
+  hundred_text = hundred_to_text(hundred_node)
+  return hundred_text if pow.zero?
+  "#{hundred_text} #{POWS[pow - 1]}"
+end
+
+def term_to_text(term)
+  term.reverse.map.with_index do |hundred_node, i|
+    if hundred_node.all?(&:zero?)
+      nil
+    else
+      hundred_with_pow_to_text(hundred_node, i)
+    end
+  end.compact.reverse.join(', ')
 end
