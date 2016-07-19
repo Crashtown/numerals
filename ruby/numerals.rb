@@ -42,23 +42,23 @@ POWS = [
 ]
 
 
-# thousand_node :: (hundred, ten, one) | :empty
+# hundred_node :: (hundred, ten, one) | :empty
 # hundred :: numeric
 # ten :: numeric
 # one :: numeric
 
-# numeric, array -> [thousand_node]
-def to_abstract_tree(num, acc = [])
+# numeric, array -> [hundred_node]
+def to_term(num, acc = [])
   rest, rem = num.divmod(1000)
-  acc << to_thousand_node(rem)
+  acc << to_hundred_node(rem)
   if rest.zero?
     acc.reverse
   else
-    to_abstract_tree(rest, acc)
+    to_term(rest, acc)
   end
 end
 
-def to_thousand_node(num)
+def to_hundred_node(num)
   hundred, rest = num.divmod(100)
   ten, one = rest.divmod(10)
   [hundred, ten, one]

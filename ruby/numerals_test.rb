@@ -3,32 +3,32 @@ require "minitest/autorun"
 
 class NumeralsTest < Minitest::Test
 
-  def test_parses_number_by_thousand_pow
+  def test_parses_number_by_thousand_pow_to_term
     assert_equal [[0, 0, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_abstract_tree(7_654_321)
+                 to_term(7_654_321)
 
     assert_equal [[0, 3, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_abstract_tree(37_654_321)
+                 to_term(37_654_321)
 
     assert_equal [[0, 0, 5],
                   [4, 3, 7],
                   [6, 5, 4],
                   [3, 2, 1]],
-                 to_abstract_tree(5_437_654_321)
+                 to_term(5_437_654_321)
 
     assert_equal [[0, 0, 5],
                   [4, 3, 7],
                   [0, 0, 0],
                   [3, 2, 1]],
-                 to_abstract_tree(5_437_000_321)
+                 to_term(5_437_000_321)
 
     assert_equal [[0, 0, 1],
                   [0, 0, 0]],
-                 to_abstract_tree(1_000)
+                 to_term(1_000)
   end
 
   def test_transform_ones_to_text
