@@ -103,10 +103,6 @@ end
 
 def term_to_text(term)
   term.reverse.map.with_index do |hundred_node, i|
-    if hundred_node.all?(&:zero?)
-      nil
-    else
-      hundred_with_pow_to_text(hundred_node, i)
-    end
+    hundred_with_pow_to_text(hundred_node, i) unless hundred_node.all?(&:zero?)
   end.compact.reverse.join(', ')
 end
