@@ -1,0 +1,14 @@
+{
+  "name": "numerals",
+  "version": "0.0.1",
+  "description": "number to english numerals",
+  "main": "numerals.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  }
+}

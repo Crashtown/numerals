@@ -56,11 +56,8 @@ end
 def number_to_term(num, acc = [])
   rest, rem = num.divmod(1000)
   acc << to_hundred_node(rem)
-  if rest.zero?
-    acc.reverse
-  else
-    number_to_term(rest, acc)
-  end
+  return acc.reverse if rest.zero?
+  number_to_term(rest, acc)
 end
 
 def to_hundred_node(num)
