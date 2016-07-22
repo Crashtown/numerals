@@ -44,7 +44,7 @@ POWS = [
 * PUBLIC INTERFACE
 */
 
-function toNumeral (number) {
+function toNumeral(number) {
   if (number === 0) { return "zero" }
   return termToText(numberToTerm(number));
 }
@@ -53,26 +53,71 @@ function toNumeral (number) {
 * INTERNAL FUNCTIONS
 */
 
-function divmod (number, divider) {
-  const result = Number.parseInt((number / divider));
+function divmod(number, divider) {
+  const result = Math.floor((number / divider));
   const reminder = number % divider;
   return [result, reminder];
 }
 
-function toHundredNode (num) {
+function toHundredNode(num) {
   const [hundred, rest] = divmod(num, 100);
   const [ten, one] = divmod(rest, 10);
   return [hundred, ten, one];
 }
 
-function numberToTerm (num, acc = []) {
+function numberToTerm(num, acc = []) {
   const [rest, reminder] = divmod(num, 1000);
   acc.push(toHundredNode(reminder));
   if (rest === 0) { return acc.reverse() }
   return numberToTerm(rest, acc);
 }
 
+function oneToText(num) {
+  return ONES[num];
+}
+
+function tenToText([ten, one]) {
+  if (ten === 0) return oneToText(one);
+  if (ten === 1) return teenToText(one);
+  if (one === 0) return TENS[ten];
+  return `${TENS[ten]}-${oneToText(one)}`;
+}
+
+function teenToText(num) {
+  return TEENS[num];
+}
+
+function hundredToText([hundred, ten, one]) {
+  tenText = tenToText([ten, one]);
+  if (hundred === 0) return tenText;
+  hundredText = `${oneToText(hundred)} hundred`;
+  if (ten === 0 && one === 0) return hundredText;
+  return `${hundredText} ${tenText}`;
+}
+
+function hundredWithPowToText(hundredNode, pow) {
+  hundredText = hundredToText(hundredNode);
+  if (pow === 0) return hundredText;
+  return `${hundredText} ${POWS[pow - 1]}`
+}
+
+function termToText(term) {
+  let hundredsInText = [];
+  term.reverse().forEach((hundredNode, i) => {
+    if (!hundredNode.every((el) => el === 0)) {
+      hundredsInText.push(hundredWithPowToText(hundredNode, i));
+    }
+  });
+  return hundredsInText.reverse().join(', ');
+}
+
+
 module.exports = {
   toNumeral,
-  numberToTerm
+  numberToTerm,
+  oneToText,
+  tenToText,
+  hundredToText,
+  hundredWithPowToText,
+  termToText,
 }
