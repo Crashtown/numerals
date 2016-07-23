@@ -88,15 +88,15 @@ function teenToText(num) {
 }
 
 function hundredToText([hundred, ten, one]) {
-  tenText = tenToText([ten, one]);
+  const tenText = tenToText([ten, one]);
   if (hundred === 0) return tenText;
-  hundredText = `${oneToText(hundred)} hundred`;
+  const hundredText = `${oneToText(hundred)} hundred`;
   if (ten === 0 && one === 0) return hundredText;
   return `${hundredText} ${tenText}`;
 }
 
 function hundredWithPowToText(hundredNode, pow) {
-  hundredText = hundredToText(hundredNode);
+  const hundredText = hundredToText(hundredNode);
   if (pow === 0) return hundredText;
   return `${hundredText} ${POWS[pow - 1]}`
 }

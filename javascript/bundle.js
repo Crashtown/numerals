@@ -21110,6 +21110,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _numerals = __webpack_require__(173);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21137,7 +21139,9 @@
 	  _createClass(Numerals, [{
 	    key: 'onChange',
 	    value: function onChange(e) {
-	      this.setState({ output: e.target.value });
+	      var value = Number.parseInt(e.target.value);
+	      var newValue = Number.isNaN(value) ? '' : (0, _numerals.toNumeral)(value);
+	      this.setState({ output: newValue });
 	    }
 	  }, {
 	    key: 'render',
@@ -21159,6 +21163,170 @@
 	}(_react2.default.Component);
 
 	exports.default = Numerals;
+
+/***/ },
+/* 173 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	var ONES = {
+	  1: "one",
+	  2: "two",
+	  3: "three",
+	  4: "four",
+	  5: "five",
+	  6: "six",
+	  7: "seven",
+	  8: "eight",
+	  9: "nine"
+	};
+
+	var TEENS = {
+	  0: "ten",
+	  1: "eleven",
+	  2: "twelve",
+	  3: "thirteen",
+	  4: "fourteen",
+	  5: "fifteen",
+	  6: "sixteen",
+	  7: "seventeen",
+	  8: "eighteen",
+	  9: "nineteen"
+	};
+
+	var TENS = {
+	  2: "twenty",
+	  3: "thirty",
+	  4: "forty",
+	  5: "fifty",
+	  6: "sixty",
+	  7: "seventy",
+	  8: "eighty",
+	  9: "ninety"
+	};
+
+	var POWS = ["thousand", "million", "billion"];
+
+	/*
+	* PUBLIC INTERFACE
+	*/
+
+	function toNumeral(number) {
+	  if (number === 0) {
+	    return "zero";
+	  }
+	  return termToText(numberToTerm(number));
+	}
+
+	/*
+	* INTERNAL FUNCTIONS
+	*/
+
+	function divmod(number, divider) {
+	  var result = Math.floor(number / divider);
+	  var reminder = number % divider;
+	  return [result, reminder];
+	}
+
+	function toHundredNode(num) {
+	  var _divmod = divmod(num, 100);
+
+	  var _divmod2 = _slicedToArray(_divmod, 2);
+
+	  var hundred = _divmod2[0];
+	  var rest = _divmod2[1];
+
+	  var _divmod3 = divmod(rest, 10);
+
+	  var _divmod4 = _slicedToArray(_divmod3, 2);
+
+	  var ten = _divmod4[0];
+	  var one = _divmod4[1];
+
+	  return [hundred, ten, one];
+	}
+
+	function numberToTerm(num) {
+	  var acc = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+
+	  var _divmod5 = divmod(num, 1000);
+
+	  var _divmod6 = _slicedToArray(_divmod5, 2);
+
+	  var rest = _divmod6[0];
+	  var reminder = _divmod6[1];
+
+	  acc.push(toHundredNode(reminder));
+	  if (rest === 0) {
+	    return acc.reverse();
+	  }
+	  return numberToTerm(rest, acc);
+	}
+
+	function oneToText(num) {
+	  return ONES[num];
+	}
+
+	function tenToText(_ref) {
+	  var _ref2 = _slicedToArray(_ref, 2);
+
+	  var ten = _ref2[0];
+	  var one = _ref2[1];
+
+	  if (ten === 0) return oneToText(one);
+	  if (ten === 1) return teenToText(one);
+	  if (one === 0) return TENS[ten];
+	  return TENS[ten] + "-" + oneToText(one);
+	}
+
+	function teenToText(num) {
+	  return TEENS[num];
+	}
+
+	function hundredToText(_ref3) {
+	  var _ref4 = _slicedToArray(_ref3, 3);
+
+	  var hundred = _ref4[0];
+	  var ten = _ref4[1];
+	  var one = _ref4[2];
+
+	  var tenText = tenToText([ten, one]);
+	  if (hundred === 0) return tenText;
+	  var hundredText = oneToText(hundred) + " hundred";
+	  if (ten === 0 && one === 0) return hundredText;
+	  return hundredText + " " + tenText;
+	}
+
+	function hundredWithPowToText(hundredNode, pow) {
+	  var hundredText = hundredToText(hundredNode);
+	  if (pow === 0) return hundredText;
+	  return hundredText + " " + POWS[pow - 1];
+	}
+
+	function termToText(term) {
+	  var hundredsInText = [];
+	  term.reverse().forEach(function (hundredNode, i) {
+	    if (!hundredNode.every(function (el) {
+	      return el === 0;
+	    })) {
+	      hundredsInText.push(hundredWithPowToText(hundredNode, i));
+	    }
+	  });
+	  return hundredsInText.reverse().join(', ');
+	}
+
+	module.exports = {
+	  toNumeral: toNumeral,
+	  numberToTerm: numberToTerm,
+	  oneToText: oneToText,
+	  tenToText: tenToText,
+	  hundredToText: hundredToText,
+	  hundredWithPowToText: hundredWithPowToText,
+	  termToText: termToText
+	};
 
 /***/ }
 /******/ ]);

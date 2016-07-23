@@ -1,4 +1,5 @@
 import React from 'react'
+import {toNumeral} from './../numerals.js'
 
 export default class Numerals extends React.Component {
   constructor(props){
@@ -11,7 +12,9 @@ export default class Numerals extends React.Component {
   }
 
   onChange(e) {
-    this.setState({output: e.target.value})
+    const value = Number.parseInt(e.target.value)
+    const newValue = Number.isNaN(value) ? '' : toNumeral(value)
+    this.setState({output: newValue})
   }
 
   render() {
