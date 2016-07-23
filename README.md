@@ -14,3 +14,16 @@ hundred_node :: (hundred, ten, one)
 hundred, ten, one :: digit
 digit :: 0..9
 ```
+
+## usage
+#####ruby:
+`ruby numerals_test.rb`
+
+#####js:
+
+```js
+npm install
+npm test
+npm run build
+open index.html
+```
