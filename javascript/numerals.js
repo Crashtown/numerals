@@ -1,4 +1,4 @@
-ONES = {
+const ONES = {
   1: "one",
   2: "two",
   3: "three",
@@ -10,7 +10,7 @@ ONES = {
   9: "nine",
 }
 
-TEENS = {
+const TEENS = {
   0: "ten",
   1: "eleven",
   2: "twelve",
@@ -23,7 +23,7 @@ TEENS = {
   9: "nineteen"
 }
 
-TENS = {
+const TENS = {
   2: "twenty",
   3: "thirty",
   4: "forty",
@@ -34,7 +34,7 @@ TENS = {
   9: "ninety"
 }
 
-POWS = [
+const POWS = [
   "thousand",
   "million",
   "billion"
