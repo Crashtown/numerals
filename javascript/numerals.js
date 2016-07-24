@@ -37,7 +37,12 @@ const TENS = {
 const POWS = [
   "thousand",
   "million",
-  "billion"
+  "billion",
+  "trillion",
+  "quadrillion",
+  "quintillion",
+  "sextillion",
+  "septillion"
 ]
 
 /*
