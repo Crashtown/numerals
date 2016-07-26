@@ -27,3 +27,10 @@ npm test
 npm run build
 open index.html
 ```
+
+#####elm:
+
+```elm
+elm reactor
+```
+and then open App.elm and Test.elm
