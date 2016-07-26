@@ -51,6 +51,17 @@ tests =
                     (Numeral.numberToTerm 1000)
                 )
             ]
+        , suite "transforms ones to text"
+            [ defaultTest (assertEqual "one" (Numeral.oneToText 1))
+            , defaultTest (assertEqual "two" (Numeral.oneToText 2))
+            , defaultTest (assertEqual "three" (Numeral.oneToText 3))
+            , defaultTest (assertEqual "four" (Numeral.oneToText 4))
+            , defaultTest (assertEqual "five" (Numeral.oneToText 5))
+            , defaultTest (assertEqual "six" (Numeral.oneToText 6))
+            , defaultTest (assertEqual "seven" (Numeral.oneToText 7))
+            , defaultTest (assertEqual "eight" (Numeral.oneToText 8))
+            , defaultTest (assertEqual "nine" (Numeral.oneToText 9))
+            ]
           -- , test "Addition" (assertEqual (3 + 7) 10)
           -- , test "String.left" (assertEqual "a" (String.left 1 "abcdefg"))
           -- , test "This test should fail" (assert False)

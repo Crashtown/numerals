@@ -1,15 +1,21 @@
-module Numeral exposing (numberToTerm)
+module Numeral exposing (numberToTerm, oneToText)
+
+
+type alias HundredNode =
+    ( Int, Int, Int )
 
 
 divmod : Int -> Int -> ( Int, Int )
 divmod number divider =
-    ( (number // divider), (rem number divider) )
+    ( (number // divider), (number `rem` divider) )
 
 
+numberToTerm : Int -> List HundredNode
 numberToTerm number =
     numberToTerm' number []
 
 
+numberToTerm' : Int -> List HundredNode -> List HundredNode
 numberToTerm' number accumulator =
     case number of
         0 ->
@@ -18,12 +24,12 @@ numberToTerm' number accumulator =
         number ->
             let
                 ( rest, reminder ) =
-                    divmod number 1000
+                    number `divmod` 1000
             in
                 numberToTerm' rest ((toHundredNode reminder) :: accumulator)
 
 
-toHundredNode : Int -> ( Int, Int, Int )
+toHundredNode : Int -> HundredNode
 toHundredNode number =
     let
         ( hundred, rest ) =
@@ -33,3 +39,6 @@ toHundredNode number =
             divmod rest 10
     in
         ( hundred, ten, one )
+
+
+oneToText : Int -> String
