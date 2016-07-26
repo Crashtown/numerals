@@ -70,6 +70,51 @@ tests =
             , defaultTest (assertEqual "eighteen" (Numeral.tenToText ( 1, 8 )))
             , defaultTest (assertEqual "sixteen" (Numeral.tenToText ( 1, 6 )))
             ]
+        , suite "transforms hundreds to text"
+            [ defaultTest (assertEqual "one hundred" (Numeral.hundredToText ( 1, 0, 0 )))
+            , defaultTest (assertEqual "six hundred two" (Numeral.hundredToText ( 6, 0, 2 )))
+            , defaultTest (assertEqual "one hundred nineteen" (Numeral.hundredToText ( 1, 1, 9 )))
+            , defaultTest (assertEqual "one hundred twenty" (Numeral.hundredToText ( 1, 2, 0 )))
+            , defaultTest (assertEqual "two hundred twenty-two" (Numeral.hundredToText ( 2, 2, 2 )))
+            ]
+        , suite "transforms hundreds with pow to text"
+            [ defaultTest (assertEqual "one" (Numeral.hundredWithPowToText ( 0, 0, 1 ) 0))
+            , defaultTest (assertEqual "one thousand" (Numeral.hundredWithPowToText ( 0, 0, 1 ) 1))
+            , defaultTest (assertEqual "one million" (Numeral.hundredWithPowToText ( 0, 0, 1 ) 2))
+            , defaultTest (assertEqual "one billion" (Numeral.hundredWithPowToText ( 0, 0, 1 ) 3))
+            ]
+        , suite "transforms term to text"
+            [ defaultTest
+                (assertEqual "seven million, six hundred fifty-four thousand, three hundred twenty-one"
+                    (Numeral.termToText
+                        [ ( 0, 0, 7 )
+                        , ( 6, 5, 4 )
+                        , ( 3, 2, 1 )
+                        ]
+                    )
+                )
+            , defaultTest
+                (assertEqual "five billion, four hundred thirty-seven million, three hundred twenty-one"
+                    (Numeral.termToText
+                        [ ( 0, 0, 5 )
+                        , ( 4, 3, 7 )
+                        , ( 0, 0, 0 )
+                        , ( 3, 2, 1 )
+                        ]
+                    )
+                )
+            ]
+        , suite "toNumeral"
+            [ defaultTest
+                (assertEqual "seven million, six hundred fifty-four thousand, three hundred twenty-one"
+                    (Numeral.toNumeral 7654321)
+                )
+            , defaultTest
+                (assertEqual "five billion, four hundred thirty-seven million, six hundred fifty-four thousand, three hundred twenty-one"
+                    (Numeral.toNumeral 5437654321)
+                )
+            , defaultTest (assertEqual "zero" (Numeral.toNumeral 0))
+            ]
         ]
 
 

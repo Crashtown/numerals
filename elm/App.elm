@@ -5,6 +5,7 @@ import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import String
+import Numeral
 
 
 main =
@@ -32,9 +33,18 @@ update msg model =
             { model | content = newContent }
 
 
+toNumeral : String -> String
+toNumeral content =
+    content
+        |> String.toInt
+        |> Result.withDefault 0
+        |> Numeral.toNumeral
+        |> toString
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ input [ placeholder "Text to reverse", onInput Change ] []
-        , div [] [ text (String.reverse model.content) ]
+        , div [] [ text (toNumeral model.content) ]
         ]
