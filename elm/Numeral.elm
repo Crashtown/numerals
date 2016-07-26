@@ -1,8 +1,28 @@
 module Numeral exposing (numberToTerm, oneToText)
 
+import Dict exposing (fromList, get)
+
 
 type alias HundredNode =
     ( Int, Int, Int )
+
+
+(=>) a b =
+    (,) a b
+
+
+ones =
+    fromList
+        [ 1 => "one"
+        , 2 => "two"
+        , 3 => "three"
+        , 4 => "four"
+        , 5 => "five"
+        , 6 => "six"
+        , 7 => "seven"
+        , 8 => "eight"
+        , 9 => "nine"
+        ]
 
 
 divmod : Int -> Int -> ( Int, Int )
@@ -41,4 +61,10 @@ toHundredNode number =
         ( hundred, ten, one )
 
 
-oneToText : Int -> String
+oneToText number =
+    case Dict.get number ones of
+        Just value ->
+            value
+
+        Nothing ->
+            Debug.crash "Unaceptable value"
