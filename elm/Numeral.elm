@@ -1,18 +1,14 @@
-module Numeral exposing (numberToTerm, oneToText)
+module Numeral exposing (numberToTerm, oneToText, tenToText)
 
-import Dict exposing (fromList, get)
+import Dict exposing (Dict)
 
 
 type alias HundredNode =
     ( Int, Int, Int )
 
 
-(=>) a b =
-    (,) a b
-
-
 ones =
-    fromList
+    Dict.fromList
         [ 1 => "one"
         , 2 => "two"
         , 3 => "three"
@@ -23,6 +19,48 @@ ones =
         , 8 => "eight"
         , 9 => "nine"
         ]
+
+
+teens =
+    Dict.fromList
+        [ 0 => "ten"
+        , 1 => "eleven"
+        , 2 => "twelve"
+        , 3 => "thirteen"
+        , 4 => "fourteen"
+        , 5 => "fifteen"
+        , 6 => "sixteen"
+        , 7 => "seventeen"
+        , 8 => "eighteen"
+        , 9 => "nineteen"
+        ]
+
+
+tens =
+    Dict.fromList
+        [ 2 => "twenty"
+        , 3 => "thirty"
+        , 4 => "forty"
+        , 5 => "fifty"
+        , 6 => "sixty"
+        , 7 => "seventy"
+        , 8 => "eighty"
+        , 9 => "ninety"
+        ]
+
+
+(=>) a b =
+    (,) a b
+
+
+getDirty : Dict comparable value -> comparable -> value
+getDirty dict key =
+    case Dict.get key dict of
+        Just value ->
+            value
+
+        Nothing ->
+            Debug.crash "Unacceptable"
 
 
 divmod : Int -> Int -> ( Int, Int )
@@ -53,18 +91,41 @@ toHundredNode : Int -> HundredNode
 toHundredNode number =
     let
         ( hundred, rest ) =
-            divmod number 100
+            number `divmod` 100
 
         ( ten, one ) =
-            divmod rest 10
+            rest `divmod` 10
     in
         ( hundred, ten, one )
 
 
+oneToText : Int -> String
 oneToText number =
-    case Dict.get number ones of
-        Just value ->
-            value
+    ones `getDirty` number
 
-        Nothing ->
-            Debug.crash "Unaceptable value"
+
+tenToText : ( Int, Int ) -> String
+tenToText ( ten, one ) =
+    case ten of
+        0 ->
+            oneToText one
+
+        1 ->
+            teenToText one
+
+        _ ->
+            let
+                tenText =
+                    tens `getDirty` ten
+            in
+                case one of
+                    0 ->
+                        tenText
+
+                    _ ->
+                        tenText ++ "-" ++ oneToText one
+
+
+teenToText : Int -> String
+teenToText number =
+    teens `getDirty` number

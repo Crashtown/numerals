@@ -62,9 +62,14 @@ tests =
             , defaultTest (assertEqual "eight" (Numeral.oneToText 8))
             , defaultTest (assertEqual "nine" (Numeral.oneToText 9))
             ]
-          -- , test "Addition" (assertEqual (3 + 7) 10)
-          -- , test "String.left" (assertEqual "a" (String.left 1 "abcdefg"))
-          -- , test "This test should fail" (assert False)
+        , suite "transforms tens to text"
+            [ defaultTest (assertEqual "twenty-two" (Numeral.tenToText ( 2, 2 )))
+            , defaultTest (assertEqual "thirty-three" (Numeral.tenToText ( 3, 3 )))
+            , defaultTest (assertEqual "ten" (Numeral.tenToText ( 1, 0 )))
+            , defaultTest (assertEqual "eleven" (Numeral.tenToText ( 1, 1 )))
+            , defaultTest (assertEqual "eighteen" (Numeral.tenToText ( 1, 8 )))
+            , defaultTest (assertEqual "sixteen" (Numeral.tenToText ( 1, 6 )))
+            ]
         ]
 
 
